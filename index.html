@@ -3,6 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Consent, before Google Tag Manager: Google's tags follow it by themselves. In the EU, the UK
+     and Switzerland analytics waits for "Accept"; elsewhere it's on unless the visitor declines. -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "granted" });
+  gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "denied",
+    region: ["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT","LV","LI","LT","LU","MT","NL","NO","PL","PT","RO","SK","SI","ES","SE","GB","CH"], wait_for_update: 500 });
+  (function () {
+    var c = null; try { c = localStorage.getItem("nekplik-consent"); } catch (e) {}
+    if (c === "granted" || c === "denied") gtag("consent", "update", { analytics_storage: c });
+  })();
+</script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -362,6 +375,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .steps { display: grid; gap: 16px; counter-reset: step; }
   .step { display: grid; grid-template-columns: 64px 1fr; gap: 20px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
   .step::before { counter-increment: step; content: counter(step); font: 400 52px/1 "Bebas Neue", Impact, sans-serif; color: var(--red); }
+  .step > div, .choice, .viewer > *, .dl, .part, .feature { min-width: 0; } /* wide code and folder lists scroll inside, not widen the page */
   .step h3 { margin: 4px 0 8px; font-size: 20px; }
   .step p, .step li { color: var(--dim); font-size: 15.5px; }
   .step p { margin: 0 0 10px; }
@@ -426,6 +440,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   footer .wrap { display: flex; gap: 16px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
   footer img { height: 20px; width: auto; opacity: .85; }
   footer .counted { flex-basis: 100%; text-align: center; font-size: 12px; }
+
+  /* Cookie banner */
+  .consent { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 30; max-width: 560px; margin: 0 auto; display: flex; gap: 16px; align-items: center;
+    background: rgba(24, 24, 27, .96); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px 16px; box-shadow: 0 20px 60px rgba(0, 0, 0, .6); }
+  .consent[hidden] { display: none; }
+  .consent p { margin: 0; font-size: 13.5px; color: var(--dim); line-height: 1.5; }
+  .consent-buttons { display: flex; gap: 8px; flex: none; }
+  @media (max-width: 560px) { .consent { flex-direction: column; align-items: stretch; } .consent-buttons .btn { flex: 1; justify-content: center; } }
+  footer button.linklike { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
 
   /* Lightbox */
   dialog.lightbox { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 94vh; }
@@ -764,9 +788,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <img src="images/logo.png" alt="NEKPLIK" width="323" height="102">
     <span>Part of <a href="https://github.com/knznepo/telebisyon">Telebisyon</a> by <a href="https://knznepo.github.io">knz</a> · MIT License</span>
     <a href="https://github.com/knznepo/telebisyon/tree/main/nekplik">Source on GitHub</a>
-    <span class="counted">This website counts visits and downloads with Google Analytics. The apps themselves send nothing.</span>
+    <span class="counted">This website counts visits and downloads with Google Analytics. The apps themselves send nothing. <button type="button" class="linklike" id="cookie-settings">Cookie settings</button></span>
   </div>
 </footer>
+
+<div class="consent" id="consent" role="region" aria-label="Cookies" hidden>
+  <p>This website uses Google Analytics cookies to count visits and downloads, nothing else. The apps themselves send nothing.</p>
+  <div class="consent-buttons">
+    <button type="button" class="btn ghost small" data-consent="denied">Decline</button>
+    <button type="button" class="btn white small" data-consent="granted">Accept</button>
+  </div>
+</div>
 
 <dialog class="lightbox" id="lightbox"><button type="button" aria-label="Close">×</button><img alt=""></dialog>
 
@@ -834,6 +866,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   document.querySelectorAll(".faq details").forEach(d => d.addEventListener("toggle", () => {
     if (d.open) track("faq_open", { question: d.querySelector("summary").textContent });
   }));
+
+  // The cookie banner: until the visitor chooses. The choice is kept in this browser.
+  const consent = document.getElementById("consent");
+  let chosen = null; try { chosen = localStorage.getItem("nekplik-consent"); } catch (e) {}
+  if (chosen !== "granted" && chosen !== "denied") consent.hidden = false;
+  consent.querySelectorAll("[data-consent]").forEach(b => b.addEventListener("click", () => {
+    const c = b.dataset.consent;
+    try { localStorage.setItem("nekplik-consent", c); } catch (e) {}
+    gtag("consent", "update", { analytics_storage: c });
+    consent.hidden = true;
+  }));
+  document.getElementById("cookie-settings").addEventListener("click", () => { consent.hidden = false; });
 
   // The AI prompt, copied with one click.
   document.getElementById("copy-prompt").addEventListener("click", e => {
