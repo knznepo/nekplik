@@ -809,24 +809,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   document.querySelectorAll("[data-zoom]").forEach(i => i.addEventListener("click", () => zoom(i.src)));
   box.addEventListener("click", () => box.close());
 
-  // Google Analytics, through Tag Manager: each download button sends a "file_download" event with
+  // Google Analytics, through Tag Manager: each download button sends an "app_download" event with
   // the file, what it's for and its version; the other buttons say which was pressed.
   window.dataLayer = window.dataLayer || [];
   const track = (event, data) => { try { dataLayer.push(Object.assign({ event }, data)); } catch (e) {} };
   const PLATFORM = { "nekplik.apk": "Android TV", "nekplik-share.apk": "Android", "NEKPLIK-Share-Mac.zip": "Mac", "NEKPLIK-Share-Windows.zip": "Windows" };
   document.querySelectorAll(".dl[data-asset] a.btn").forEach(a => a.addEventListener("click", () => {
     const card = a.closest(".dl"), name = card.dataset.asset;
-    track("file_download", {
+    track("app_download", {
       file_name: name,
       file_extension: name.split(".").pop(),
       link_url: a.href,
       link_text: card.querySelector("h3").textContent + " (" + PLATFORM[name] + ")",
-      app_platform: PLATFORM[name],
-      app_version: (card.querySelector(".meta").textContent.match(/v[\d.]+/) || ["latest"])[0],
+      download_platform: PLATFORM[name],
+      release_version: (card.querySelector(".meta").textContent.match(/v[\d.]+/) || ["latest"])[0],
     });
   }));
   document.querySelectorAll('a[href="examples/info.json"]').forEach(a => a.addEventListener("click", () =>
-    track("file_download", { file_name: "info.json", file_extension: "json", link_url: a.href, link_text: "Example info.json", app_platform: "Example" })));
+    track("example_download", { file_name: "info.json", file_extension: "json", link_url: a.href, link_text: "Example info.json" })));
   document.querySelectorAll('a[href="#download"]').forEach(a => a.addEventListener("click", () =>
     track("cta_click", { cta: a.closest(".bar") ? "Top bar Download" : "Download free" })));
   document.querySelectorAll('a[href="#how"]').forEach(a => a.addEventListener("click", () => track("cta_click", { cta: "How it works" })));
