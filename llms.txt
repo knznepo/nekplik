@@ -1,0 +1,45 @@
+# NEKPLIK
+
+> NEKPLIK is a free, open-source app (MIT licence) by knz that turns the movies and series on a USB drive, a computer or an Android phone into a personal streaming app, on Android TV, Google TV and any web browser on the same home Wi-Fi. No accounts, no subscriptions, no ads, and nothing is uploaded: films go straight from the drive, computer or phone to the TV.
+
+Website: https://knznepo.github.io/nekplik/
+Source code: https://github.com/knznepo/telebisyon/tree/main/nekplik
+Author: knz (https://knznepo.github.io)
+
+## The three apps
+
+- **NEKPLIK** (Android TV, Google TV, TV boxes): the app you watch on. Download: https://github.com/knznepo/telebisyon/releases/latest/download/nekplik.apk
+- **NEKPLIK Share for Android** (phones, tablets): shares a USB drive plugged into the phone with the TV, and serves NEKPLIK to any browser on the Wi-Fi. Download: https://github.com/knznepo/telebisyon/releases/latest/download/nekplik-share.apk
+- **NEKPLIK Share for Mac and Windows**: shares a folder or drive on a computer. Downloads: https://github.com/knznepo/telebisyon/releases/latest/download/NEKPLIK-Share-Mac.zip and https://github.com/knznepo/telebisyon/releases/latest/download/NEKPLIK-Share-Windows.zip (Windows needs Python 3)
+
+## Features
+
+- A streaming-app home screen: featured films at the top, then Continue watching, Recently added, collections and genre rows.
+- Resumes every film and episode where you stopped; plays the next episode automatically, with an Up next countdown.
+- Search by title, collection, genre, actor, director or year, with an on-screen keyboard for the remote or voice.
+- Series with seasons and episodes; subtitles from .srt files or inside the video.
+- Finds USB drives in the TV, and computers and phones sharing on the Wi-Fi, by itself.
+- The same library in any browser at home; films a browser can't play are marked "TV only".
+
+## How to set it up
+
+1. On the drive or computer, make a **Movies** and a **Series** folder, with one folder per film or show (the video, and optionally poster.jpg, background.jpg, info.json and .srt subtitles). Series have a folder per season: Series/Show/Season 1/.
+2. On the TV, install the free **Downloader** app from the Google Play Store, open https://github.com/knznepo/telebisyon/releases/latest/download/nekplik.apk in it, and install NEKPLIK.
+3. Plug the drive into the TV and press OK in NEKPLIK, or share the films from a phone or computer with NEKPLIK Share on the same Wi-Fi.
+4. Open NEKPLIK and press Play; on a phone or laptop, open the link NEKPLIK Share shows.
+
+## info.json
+
+Optional, in each film's folder. Only title and description are needed; also: year, released (YYYY-MM-DD), rating, score (out of 10), runtime (minutes), genres, cast, director, language, tagline, collection. Example: https://knznepo.github.io/nekplik/examples/info.json
+
+## What plays
+
+On the TV, most MP4 and MKV files (H.264 or H.265 video; AAC, AC3 or MP3 sound). In browsers: Chrome and Edge play MP4 and most MKV; Safari plays MP4.
+
+## Compatibility
+
+Android TV and Google TV from about 2017 on (Sony, Philips, TCL, Hisense, Xiaomi Mi Box, Chromecast with Google TV, Nvidia Shield). Fire TV is untested.
+
+## Disclaimer
+
+NEKPLIK is a personal media library and playback application. It does not provide, host, distribute, or include copyrighted movies or television shows. Users are responsible for ensuring that the media they access through the application is legally obtained and used.
